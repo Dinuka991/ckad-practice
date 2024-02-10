@@ -1,22 +1,25 @@
 # Kubernetes Command Reference
 
-## Get Pods
+## Pods
+
+
+#### Get Pods
 
 ```kubectl get pods```
 
 
-## Update Pod
+#### Update Pod
 
 ```kubectl set image pod/pod-name container-name=image:tag```
 
-## Describe Pod
+#### Describe Pod
 
 ```kubectl describe pod pod-name```
 
-## Delete Pod 
+#### Delete Pod 
 
 ```kubectl delete pod pod-name```
-## Edit Pod 
+#### Edit Pod 
 
 ```kubectl apply -f pod.definition.yaml```
 
@@ -34,22 +37,22 @@ To modify the properties of a pod interactively:
 
 Replace <pod-name> with the name of the pod you want to edit.
 
-## Replica set 
+## Replication Controller
 
-```apiVersion: v1```
+```kubectl create -f rc.defintion.yaml```
 
-```kind: ReokicationController```
+## Replica Set 
 
-```metadata: ```
+#### create replica set 
 
-``` ```
-```name: myapp-rc```
+```kubectl create -f replicaset-definition.yaml```
 
-``` ```
-```labels:```
+#### update replica set
 
-``` ```
-``` ```
+```kubectl replace -f replicaset-definition.yaml```
+#### Scale the replicas 
 
+```kubectl scale replicas=6 -f replicaset-defintion.yaml```
 
+```kubectl scal replicas=6 replicaset myapp-replicaset```
 

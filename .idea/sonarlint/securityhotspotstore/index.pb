@@ -49,3 +49,5 @@ Q.idea/sonarlint/securityhotspotstore/b/3/b3bc289c7bfc7ad21e1c0aba4f5756a6d54ee1
 Q.idea/sonarlint/securityhotspotstore/b/8/b82f6cff6c0c2f1fe4dcc94ef8ae2c19264298fa,a/d/ad2ad27d9ba055e1a83971d6f2e063a1ff276d39
 B
 rc.definition.yaml,6/f/6f684e6eef9f829d92e3fd9a68c63fc7436f6375
+J
+replicaset-definition.yaml,5/c/5c3083556410a779eda691b7e6693ca1e677b6d9

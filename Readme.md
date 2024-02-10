@@ -52,7 +52,7 @@ Replace <pod-name> with the name of the pod you want to edit.
 ```kubectl replace -f replicaset-definition.yaml```
 #### Scale the replicas 
 
-```kubectl scale replicas=6 -f replicaset-defintion.yaml```
+```kubectl scale --replicas=6 -f replicaset-defintion.yaml```
 
-```kubectl scal replicas=6 replicaset myapp-replicaset```
+```kubectl scale --replicas=6 replicaset myapp-replicaset```
 

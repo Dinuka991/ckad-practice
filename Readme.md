@@ -71,9 +71,37 @@ get all the objects
 
 ## Namespaces
 
+#### Get all namespaces
+
+```kubectl get  namespaces```
+
 #### get pods from another namespace
 
 ```kubectl get pods --namespace=kube-system```
+
+#### get all pods from dev 
+
+```kubectl get pods --namespace=dev```
+
+#### create namespace 
+
+```kubectl crate -f namepace-dev.yaml```
+
+#### Switch the namespaces 
+
+```kubectl config set-context $(kubectl config current-context) --namespace=dev```
+
+####  Get pods from all namespaces 
+
+```kubectl get pods --all-namespaces```
+
+#### create pod in finance namespace 
+
+```kubectl get pods -n=finance```
+
+#### get service in the namespace
+
+```kubectl get svc -n=marketing```
 
 
 
@@ -103,6 +131,14 @@ get all the objects
 #### Output with YAML format 
 
 ```kubectl create namespace test-123 --dry-run -o yaml```
+
+#### imperative command to creat resource 
+
+```--dry-run```
+
+#### imperative command to test without creating resources 
+
+```-o yaml:```
 
 
 

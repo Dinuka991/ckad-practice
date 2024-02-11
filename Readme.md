@@ -56,3 +56,53 @@ Replace <pod-name> with the name of the pod you want to edit.
 
 ```kubectl scale --replicas=6 replicaset myapp-replicaset```
 
+#### Edit the replica set 
+
+```kubectl edit rs new-replica-set```
+
+## Deployments 
+create deployment 
+
+```kubectl create -f deployment-definition.yaml```
+
+get all the objects
+
+```kubectl get all```
+
+## Namespaces
+
+#### get pods from another namespace
+
+```kubectl get pods --namespace=kube-system```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Tips
+
+#### Output with JSON format 
+
+```kubectl create namespace test-123 --dry-run -o json```
+
+#### Output with wide details 
+
+```kubectl get pods -o wide```
+
+#### Output with YAML format 
+
+```kubectl create namespace test-123 --dry-run -o yaml```
+
+
+

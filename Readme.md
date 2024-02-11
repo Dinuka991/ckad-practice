@@ -103,7 +103,36 @@ get all the objects
 
 ```kubectl get svc -n=marketing```
 
+## Imperative commands 
 
+
+#### create a pod 
+
+```kubectl run podname --image=<container_image-name> --labels <labelaname> = <labele value>```
+
+#### create a new service to expose application
+
+```kubectl create service clusterip redis-service --tcp=6379:6379 --dry-run=client -o yaml | kubectl apply -f -```
+
+#### create deployment using imperative command
+
+```kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3```
+
+#### create pod with expose the port
+
+```kubectl run custom-nginx --image=nginx --port=8080```
+
+#### create namespace imperative 
+
+```kubectl create ns dev-ns```
+
+#### create new deployment with image and replicas 
+
+```kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2```
+
+#### Create a pod called httpd using the image httpd:alpine in the default namespace. Next, create a service of type ClusterIP by the same name (httpd). The target port for the service should be 80
+
+```kubectl run httpd --image=httpd:alpine --port=80 --expose```
 
 
 
@@ -139,6 +168,11 @@ get all the objects
 #### imperative command to test without creating resources 
 
 ```-o yaml:```
+
+#### Modify YAML and apply changes 
+
+```kubectl apply -f```
+
 
 
 

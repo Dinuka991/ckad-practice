@@ -106,11 +106,17 @@ get all the objects
 ## Imperative commands 
 
 
-#### create a pod 
+#### Deploy a pod 
 
-```kubectl run podname --image=<container_image-name> --labels <labelaname> = <labele value>```
+```kubectl run <podname> --image=<image-name> --labels <labelaname> = <labele value>```
 
 #### create a new service to expose application
+
+##### create a service named redis-service of ClusterIP to exposed pod redis on port 6379
+
+```kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml```
+
+##### Without pass selectors 
 
 ```kubectl create service clusterip redis-service --tcp=6379:6379 --dry-run=client -o yaml | kubectl apply -f -```
 
@@ -129,6 +135,7 @@ get all the objects
 #### create new deployment with image and replicas 
 
 ```kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2```
+
 
 #### Create a pod called httpd using the image httpd:alpine in the default namespace. Next, create a service of type ClusterIP by the same name (httpd). The target port for the service should be 80
 

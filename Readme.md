@@ -56,3 +56,130 @@ Replace <pod-name> with the name of the pod you want to edit.
 
 ```kubectl scale --replicas=6 replicaset myapp-replicaset```
 
+#### Edit the replica set 
+
+```kubectl edit rs new-replica-set```
+
+## Deployments 
+create deployment 
+
+```kubectl create -f deployment-definition.yaml```
+
+get all the objects
+
+```kubectl get all```
+
+## Namespaces
+
+#### Get all namespaces
+
+```kubectl get  namespaces```
+
+#### get pods from another namespace
+
+```kubectl get pods --namespace=kube-system```
+
+#### get all pods from dev 
+
+```kubectl get pods --namespace=dev```
+
+#### create namespace 
+
+```kubectl crate -f namepace-dev.yaml```
+
+#### Switch the namespaces 
+
+```kubectl config set-context $(kubectl config current-context) --namespace=dev```
+
+####  Get pods from all namespaces 
+
+```kubectl get pods --all-namespaces```
+
+#### create pod in finance namespace 
+
+```kubectl get pods -n=finance```
+
+#### get service in the namespace
+
+```kubectl get svc -n=marketing```
+
+## Imperative commands 
+
+
+#### Deploy a pod 
+
+```kubectl run <podname> --image=<image-name> --labels <labelaname> = <labele value>```
+
+#### create a new service to expose application
+
+##### create a service named redis-service of ClusterIP to exposed pod redis on port 6379
+
+```kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml```
+
+##### Without pass selectors 
+
+```kubectl create service clusterip redis-service --tcp=6379:6379 --dry-run=client -o yaml | kubectl apply -f -```
+
+#### create deployment using imperative command
+
+```kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3```
+
+#### create pod with expose the port
+
+```kubectl run custom-nginx --image=nginx --port=8080```
+
+#### create namespace imperative 
+
+```kubectl create ns dev-ns```
+
+#### create new deployment with image and replicas 
+
+```kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2```
+
+
+#### Create a pod called httpd using the image httpd:alpine in the default namespace. Next, create a service of type ClusterIP by the same name (httpd). The target port for the service should be 80
+
+```kubectl run httpd --image=httpd:alpine --port=80 --expose```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Tips
+
+#### Output with JSON format 
+
+```kubectl create namespace test-123 --dry-run -o json```
+
+#### Output with wide details 
+
+```kubectl get pods -o wide```
+
+#### Output with YAML format 
+
+```kubectl create namespace test-123 --dry-run -o yaml```
+
+#### imperative command to creat resource 
+
+```--dry-run```
+
+#### imperative command to test without creating resources 
+
+```-o yaml:```
+
+#### Modify YAML and apply changes 
+
+```kubectl apply -f```
+
+
+
+

@@ -51,3 +51,7 @@ B
 rc.definition.yaml,6/f/6f684e6eef9f829d92e3fd9a68c63fc7436f6375
 J
 replicaset-definition.yaml,5/c/5c3083556410a779eda691b7e6693ca1e677b6d9
+A
+namespace-dev.yml,1/f/1fa4c1f268ca4fad6665efce0181dfb0c71e1881
+B
+Compute-quota.yaml,e/9/e9c4a5d50e577324ddae2aac83f64490dc0feab7

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    type: front-end
+spec:
+  containers:
+    - name: ubuntu-sleeper
+      image: ubuntu
+      command: ["sleep"]
+      args: ["10"]

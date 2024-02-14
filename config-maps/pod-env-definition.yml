@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-app
+  labels:
+    type: fe
+spec:
+  containers:
+    - name:  ubuntu-sleeper
+      env:
+        - name: color
+          value: red

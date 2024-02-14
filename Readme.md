@@ -1,3 +1,21 @@
+# Docker Commands 
+
+##### Run the instance of the image 
+
+```docker run <image-name>```
+
+##### list the containers 
+
+```docker ps```
+
+container only live as long as task running 
+
+#####  specify the task as argument 
+
+```docker run ubuntu sleep 5 ```
+
+
+
 # Kubernetes Command Reference
 
 ## Pods
@@ -7,8 +25,18 @@
 
 ```kubectl get pods```
 
+#### Get Yaml file by giving pod name 
+
+```kubectl get pods <pod-name>  -o yaml > pod.yaml```
 
 #### Update Pod
+
+get the yaml file using above command and then open using vi editor, then update
+the required changes and apply the changes. 
+
+```kubectl apply -f pod.yaml```
+
+update the image file without opening yaml file
 
 ```kubectl set image pod/pod-name container-name=image:tag```
 
@@ -26,6 +54,16 @@
 If you have a pod definition file (pod.definition.yaml), you can edit it directly and apply the changes using this command.
 
 If you need to extract the definition of a pod to a file:
+
+Can not edit specifications of an existing POD. other than below 
+
+specs.containers[*].image
+spec.activeDeadlineSeconds
+spec.activeDeadlineSeconds
+specs.tolerations 
+
+
+
 
 ```kubectl get pod <pod-name> -o yaml > pod-definition.yaml```
 
@@ -143,8 +181,29 @@ get all the objects
 
 
 
+## Config Map
 
+#### Create config map declarative way
 
+##### Imp way
+
+```kubectl create cm webapp-config-map  --from-literal=<NAME>=<value>```
+
+##### dec way
+
+```kubectl create -f cnfig-map.yml```
+
+#### Imperative way 
+
+```kubectl create config \```
+```  ```
+```<config-name>  --form-literal=<key>=<value>```
+
+#### giving file path 
+
+```kubectl create config \```
+```  ```
+```<config-name>  --<form-file>=<file_to_path>```
 
 
 
@@ -179,6 +238,14 @@ get all the objects
 #### Modify YAML and apply changes 
 
 ```kubectl apply -f```
+
+
+## Command & Arguments 
+
+
+
+
+
 
 
 

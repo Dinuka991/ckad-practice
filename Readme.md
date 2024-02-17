@@ -14,7 +14,9 @@ container only live as long as task running
 
 ```docker run ubuntu sleep 5 ```
 
+## Minikube commands
 
+```minikube start```
 
 # Kubernetes Command Reference
 
@@ -206,9 +208,21 @@ get all the objects
 ```<config-name>  --<form-file>=<file_to_path>```
 
 
+## Encrypt Secret Data at Rest 
 
+#### create a secret object from literal 
 
+``` kubectl create secret generic my-secret --from-literal=key1=supersecret --from-literal=key2=topsecret```
 
+#### get secret details 
+
+```kubectl get secret my-secret1 -o yaml```
+
+#### decode encrypted values 
+
+```echo "-ssvsd-vsd" | base64 --decode```
+
+## SecurityContext 
 
 
 

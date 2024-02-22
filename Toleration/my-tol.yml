@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-toleration-pod
+  labels:
+   name: my-label
+   type: frontend
+spec:
+  containers:
+    - name: ng-container
+      image: ngnix
+  tolerations:
+    - key: "app"
+      operator: "Equal"
+      value: "blue"
+      effect: "NoSchedule"

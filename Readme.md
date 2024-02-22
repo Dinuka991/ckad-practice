@@ -77,6 +77,10 @@ To modify the properties of a pod interactively:
 
 Replace <pod-name> with the name of the pod you want to edit.
 
+#### run a command inside pod 
+
+```kubectl exec ubuntu -- whoami```
+
 ## Replication Controller
 
 ```kubectl create -f rc.defintion.yaml```
@@ -104,6 +108,8 @@ Replace <pod-name> with the name of the pod you want to edit.
 create deployment 
 
 ```kubectl create -f deployment-definition.yaml```
+
+```kubeclt create deployment <name> --image=<image-name> --replicas=<no-of-replicas>```
 
 get all the objects
 
@@ -224,6 +230,81 @@ get all the objects
 
 ## SecurityContext 
 
+#### identify the user who execute the sleep process
+
+
+```kubectl exec ubuntu-sleeper -- whoami```
+
+
+## Service Accounts 
+
+#### into 
+
+there two type of accounts in kb. service acc and user acc
+
+#### create service acc
+
+```kubectl create serviceaccount <acc-name>```
+
+
+## Resource Requirements
+
+##### Intro 
+
+Every pod need set of resources to run.  Scheduler decide which node pods goes to. Identify the best node pods run.
+If node dosen't have sufficent resources then scheduler will assinged the pod to another nod. if any of the
+node dosent have siffcient resouece will move to pending . 
+
+
+CPU 0.1 = 100M
+
+1 CPU = 1 AWS / 1 GCP core / 1 Azure Core / 1 Hyperthread 
+
+
+Behaviour CPU
+
+Without limit pod can consume all the resource of CPU 
+
+## Taints and Tolerations 
+
+Taints and Tolerations are mechanisms to control which pods can be scheduled onto which nodes in
+cluster. 
+
+
+Taints : Taints are applied to nod to repel pods. they prevent pods from being scheduled onto
+nodes unless the pod has a matching "toleration" for that taint. 
+
+Tolerations: Tolerations are applied to pods and specify that the pod can tolerate nodes 
+with specific taints. 
+
+#### Taint a node 
+
+```kubectl taint nodes <node-name> key=value:effect```
+
+Effect either be NoSchedule | PreferNoSchedule | NoExecute 
+
+```kubectl taint node node1 app=blue:NoSchedule```
+
+#### Apply a Toleration to a Pod 
+
+Toleration are add the Pod.
+
+#### To see taints details
+
+```kubectl describe node kubemaster | grep Taint```
+
+#### To remove the taints 
+
+```kubectl taint node <taint-name>-```
+
+
+## Node Seclectors 
+
+#### Label the nodes 
+
+```kubectl label nodes <node-name> <label-key>=<label-value>```
+
+## Node Affinity 
 
 
 

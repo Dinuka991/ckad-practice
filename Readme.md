@@ -375,5 +375,61 @@ Benefits: Ensures consistent data format for consumption by downstream systems, 
 
 
 
+## Observability 
+
+#### Readiness and Liveness Probes 
+
+The lifecycle of pods consists three main stages:pending , containerCreating and running.
+Pod conditions include PodScheduled, Initialized , ContainersReady and Ready. 
+
+Typically , Kubernetes does not wait for all applications inside containers to be up and running before
+showing as ready. This premature readiness status can lead to issues. To mitigate this, utilize the 
+##### readinessProbe.
+
+this allows you to define test scenarios to ensure that services inside the containers are up and running properly. 
+
+##### Liveness Probe
+
+In addition to readinessProbe , livenessProbe is used to health test applications. As kubernetes is an 
+orchestration service, it has the capability to automatically restart failed containers. However ,In 
+Scenarios where a container repeatedly fails due to issues, Kubernetes may enter an infinite restart loop.
+To mitigate this , livenessProbe can be utilized. 
+
+LivenessProbe allows you to define health checks for your application.Kubernetes periodically performs these 
+checks , and if the application fail the check, Kubernetes will restart the container to restore its health. 
+
+
+##### Logging 
+
+
+##### to see the logs in docker 
+
+```docker logs -f ecf```
+##### to run the detach mood in docker
+
+```docker run -d kodekcloud/event-simulator```
+
+
+##### to see the logs in kubernetes 
+
+```kubectl logs -f <pod-name> <container-name>```
+
+##### Monitor and debug application 
+
+```git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git```
+
+```kubectl create -f .```
+
+```minukube addons enable metrics-server```
+
+```kubectl top node```
+
+```kubectl to[ pod```
+
+
+
+
+
+
 
 

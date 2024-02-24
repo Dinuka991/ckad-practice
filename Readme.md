@@ -308,7 +308,39 @@ Toleration are add the Pod.
 
 
 
+
+## Multi-Container Pods 
+
+There three type of multi container pods in kubernets. those are Ambassador,Adapter
+and Sidecar. 
+
+#### Example of sidecar patter
+
+Purpose: Extends the functionality of the main container by adding a helper container.
+Example: You have a web server and a log agent. Both reside in the same pod, sharing the same volume for logs. The log agent collects and processes logs from the web server without modifying its core functionality.
+Benefits: Modular design, easier scaling of helper containers, independent lifecycles for main and helper containers
+
+#### Example of Ambassdor 
+
+Purpose: Acts as a proxy or mediator between the main container and external services.
+Example: Your application interacts with three databases: production, development, and user acceptance testing (UAT). An Ambassador container routes traffic to the appropriate database based on configuration or load balancing.
+Benefits: Abstracts service discovery and routing from the main container, simplifies communication with external services, improves resilience and scalability.
+
+##### Adapter design pattern
+
+Purpose: Adapts data formats or protocols between the main container and other services.
+Example: Different containers in your application generate logs in various formats. An Adapter container collects these logs, standardizes the format, and then sends them to a central logging server.
+Benefits: Ensures consistent data format for consumption by downstream systems, simplifies integration with heterogeneous components.
+
+#### see log 
+
+```kubectl -n elastic-stack exec -it app -- cat /log/app.log```
+
 ## Tips
+
+#### checkout to another namespace
+
+```kubectl config set-context $(kubectl config current-context) --namespace=<desired-namespace>```
 
 #### Output with JSON format 
 

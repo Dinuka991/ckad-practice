@@ -111,6 +111,8 @@ create deployment
 
 ```kubeclt create deployment <name> --image=<image-name> --replicas=<no-of-replicas>```
 
+```kubectl label deployments nginx-deployment tire=fe```
+
 get all the objects
 
 ```kubectl get all```
@@ -424,7 +426,62 @@ checks , and if the application fail the check, Kubernetes will restart the cont
 
 ```kubectl top node```
 
-```kubectl to[ pod```
+```kubectl top pod```
+
+# POD Design 
+
+## Labels
+
+labels are properties to add each items. 
+
+
+##### select the pods with lables 
+
+```kubectl get pods --selector app=App1```
+
+#### get the count of pod 
+
+```kubectl get pods --selector env=dev --no-headers | wc -l```
+
+#### get the pod with multiple selectors 
+
+```kubectl get  all -selectors  <key>=<value> , <key2>=<value2> , <key3>=<value> | wc -l```
+
+
+
+
+
+## Rolling update and roleback deployments 
+
+#### rollout command 
+
+```kubectl rollout  -h```
+```kubectl rollout status -h```
+```kubectl rollout deployment```
+
+rolling update is default deployment stragety. In here take down previous version
+of deployment one by one and take up new version. 
+
+there few ways to update the deployment.
+
+update the defeinition file and use the below command. 
+
+```kubectl apply -f <defile name>```
+
+Or  update the image name 
+
+```kubectl set image=<new-image>``` <deployment-name>
+
+```kubectl rollout undo  deployment/<app-name>```
+
+```kubectl rollout status deployment/<app-name>```
+
+```kubectl rollout history deployment/<app-name>```
+
+```kubectl rollout undo deployment/<app-name>```
+
+
+
 
 
 

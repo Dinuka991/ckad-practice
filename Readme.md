@@ -451,7 +451,29 @@ labels are properties to add each items.
 
 
 
-## Rolling update and roleback deployments 
+## Rolling update and rollback deployments 
+
+
+
+If you first create deployment it will trgger a rollout. New rollout create a new deployment revision. In future
+once application updated new rollout will trigger and new reployment version will be created. this help us to maintain
+a history about rollout and rollback to previous version if necessary. 
+
+```kubectl rollout status deployment/myapp-deployment```
+```kubectl rollout  history deployment/<name>```
+
+There two type of rollout strategies. 
+
+Recreate Strategy 
+
+Destroy all the containers of current version and deploy the new version. Disadvantage of  this application 
+will have a downtime. 
+
+Rolling Update 
+
+rolling update is default deployment strategy. In here take down previous version
+of deployment one by one and take up new version one by one. In this way application never goes down. 
+
 
 #### rollout command 
 
@@ -459,26 +481,72 @@ labels are properties to add each items.
 ```kubectl rollout status -h```
 ```kubectl rollout deployment```
 
-rolling update is default deployment stragety. In here take down previous version
-of deployment one by one and take up new version. 
 
 there few ways to update the deployment.
 
-update the defeinition file and use the below command. 
+##### Option-1 (To update deployment)
+
+update the definition file and use the below apply command. 
 
 ```kubectl apply -f <defile name>```
 
-Or  update the image name 
+##### Option-2(To update deployment)
+
+update the image name with set command , in this way will have conflicts with definition file with deployment as
+definition can not update using this command. 
+
+To identify the strategy can use describe command and it will show the strategy type. 
+
+##### Rollback 
+
+Rollback will allow to rollback the changes to previous version 
+
+```kubectl rollout undo  deployment/<app-name>```
+
+
 
 ```kubectl set image=<new-image>``` <deployment-name>
 
-```kubectl rollout undo  deployment/<app-name>```
 
 ```kubectl rollout status deployment/<app-name>```
 
 ```kubectl rollout history deployment/<app-name>```
 
 ```kubectl rollout undo deployment/<app-name>```
+
+
+#### scale the deployment 
+
+```kubectl scal deployment --replicas=<number>  <deployment-name>```
+
+
+
+```kubectl create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml  > throw-dice-job.yaml```
+
+
+## Service Types
+
+Kubernetes service use to communicate between pods within node as well
+pod outside the cluster. Services help to make available apllication 
+to end users. and help the conections to extranal services as well
+make loose couple microservices. 
+
+
+NodePort
+
+Service make acceble internal pods from the node. 
+
+ClusterIp
+
+Make virtual IP to communicate between extranel services. 
+
+LoadBlancer
+
+Make distribute the load among the pods
+
+
+
+
 
 
 

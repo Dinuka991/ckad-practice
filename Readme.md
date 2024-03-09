@@ -532,17 +532,63 @@ to end users. and help the conections to extranal services as well
 make loose couple microservices. 
 
 
+
+
+
 NodePort
 
-Service make acceble internal pods from the node. 
+Service make acceble internal pods from the node. Service listen the pod in the node and forwered request to
+
+
+NodePort (Port in the  node) -> Service Port (Port in the pod) -> TargetPort (Port in the pod)
+
 
 ClusterIp
 
-Make virtual IP to communicate between extranel services. 
+Make virtual IP to communicate between extranel services.  Such as frontend server to backend. Cluster ip use communicate
+between the services.
 
 LoadBlancer
 
 Make distribute the load among the pods
+
+
+### INGRESS
+
+
+#### How simple application deploy 
+
+You  build the application in docker image deploy to kubernetes cluster as pod
+in deployment. Application need a  database so database also deploy as a pod and
+create a service call cluster ip called mysql service make it accessable to applicaton.
+To make application accessable to outside create a another service called 
+NodePort.  point to dns server to IP of the node.
+
+
+#### Ingress controller 
+
+GCP .NGINX ,Contour
+
+##### NGINX
+
+NGINX provide NGINX server which include the load balancer , ssl and ect.
+Need to setup a config map to connect with NGINX.
+
+
+ingress controller included  NGINX deployment , service , configMap and Auth.
+
+Ingress resource is created with kubernetes definition file. 
+Ex - Ingress-wear.yaml 
+
+#### Ingress resources 
+
+#### Ingress rules 
+
+rules defined the routs base on URL. 
+
+```kubectl create ingress <ingress-name>  --rule="host/path=service:port""```
+
+
 
 
 

@@ -135,9 +135,20 @@ get all the objects
 
 ```kubectl crate -f namepace-dev.yaml```
 
+#### find the all details with namespace 
+
+```kubectl get all -A```
+
+#### get a resource of all namespaces 
+
+```kubectl get <resourse-name>  --all-namespaces```
+
 #### Switch the namespaces 
 
 ```kubectl config set-context $(kubectl config current-context) --namespace=dev```
+
+
+```kubectl config set-context --current --namespace=<name-namespce>```
 
 ####  Get pods from all namespaces 
 
@@ -555,6 +566,57 @@ Make distribute the load among the pods
 
 ### INGRESS
 
+An Ingress Controller is responsible for managing external access 
+to services within a Kubernetes cluster. Two popular Ingress Controllers are NGINX and Contour. Here, we'll focus on NGINX.
+
+### NGINX Ingress Controller
+
+### Deployment
+
+The NGINX Ingress Controller deployment includes:
+
+NGINX deployment
+NGINX service
+ConfigMap for NGINX configuration
+Authorization configurations, if required
+
+### Ingress Resources
+
+Ingress resources define rules and configuration for managing external 
+access to services within the cluster. 
+They specify routing based on URL paths.
+
+
+### Usage
+
+#### To create an Ingress resource:
+
+```kubectl create ingress <ingress-name> --rule="host/path=service:port"```
+
+#### To edit an existing Ingress:
+
+```kubectl edit ingress --namespace <namespace-name>```
+
+#### To view all Ingress resources:
+
+```kubectl get ingress```
+
+### Ingress Controller Pod
+
+The Ingress Controller runs as a pod within the Kubernetes cluster. Its primary
+function is to watch for Ingress resources and implement the specified rules.
+
+### Editing Ingress
+
+To edit an existing Ingress resource:
+
+```kubectl edit ingress <name> -n <namespace-name>```
+
+### Conclusion
+
+Ingress resources and controllers are crucial for managing external 
+access to services within a Kubernetes cluster. By utilizing NGINX as an Ingress Controller,
+you can efficiently manage routing and access control for your applications.
 
 #### How simple application deploy 
 
@@ -563,6 +625,8 @@ in deployment. Application need a  database so database also deploy as a pod and
 create a service call cluster ip called mysql service make it accessable to applicaton.
 To make application accessable to outside create a another service called 
 NodePort.  point to dns server to IP of the node.
+
+
 
 
 #### Ingress controller 
@@ -589,13 +653,63 @@ rules defined the routs base on URL.
 ```kubectl create ingress <ingress-name>  --rule="host/path=service:port""```
 
 
+```kubectl edit ingress --namespace app-space```
+
+#### Ingress Controller 
+
+Ingress controller is responsible to managing external access to services
+withing a kubernetes cluster.Two popular ingress controller are
+NGINX and counter.
+
+This is typically  run as Pod withing the kubernetes cluster.
+
+Ingress controller handle the load balancing , routing ,incoming traffic 
+based  on he rules defined in the ingress resources. 
+
+##### Ingress resources 
+
+Ingress Resources are Kubernetes objects that define rules and configuration for managing external
+access to services within the cluster.
 
 
 
 
 
 
+```kubectl ```
 
+#### Ingress Resources 
+
+Ingress resources are kubernetes objects that define that define rules and
+configuration  for managine extranel access to servoces withing the cluster. 
+
+
+#### Edit the ingress 
+
+```kubectl edit ingress  <name>  -n <namespace-name>```
+
+
+```kubectl get ingress```
+
+```kubectl create ingress example-ingress -n example-namespace --rule=/app=example-service:8080```
+
+```kubectl create namespace <>```
+
+```kubectl config set-context --current --namespace=ingress-nginx```
+
+```kubectl create configmap ingress-nginx-controller --namespace ingress-nginx``` 
+
+### Network Policies 
+
+
+Basically there two type of network traffics. It's include ingress and egress. so ingress is incoming traffic and 
+egress is outgoing traffic. 
+
+Ingress Rules: These rules define how incoming traffic is allowed to reach pods within the cluster. 
+They specify criteria such as source IP addresses, ports, and protocols. 
+
+Egress Rules: These rules govern outgoing traffic from pods,
+determining which destinations, ports, and protocols are permitted.
 
 
 

@@ -13,6 +13,16 @@ spec:
         - podSelector:
             matchLabels:
               name: api-pod
+        - namespaceSelector:
+            matchLabels:
+              name: prod
+        - ipBlock:
+            cidr: 192.168.8.5
       ports:
         - protocol: TCP
           port: 3306
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 192.168.9.5/32
+

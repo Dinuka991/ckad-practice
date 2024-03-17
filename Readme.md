@@ -18,9 +18,13 @@ container only live as long as task running
 
 ```minikube start```
 
-# Kubernetes Command Reference
 
-## Pods
+# command cheat sheet 
+
+```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
+```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
+
+# Pods
 
 
 #### Get Pods
@@ -379,6 +383,8 @@ Benefits: Ensures consistent data format for consumption by downstream systems, 
 
 ```kubectl apply -f```
 
+#### Get the count 
+
 
 ## Command & Arguments 
 
@@ -543,31 +549,46 @@ to end users. and help the conections to extranal services as well
 make loose couple microservices. 
 
 
+# service 
+
+```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
+
+## Service Types
+
+Service type specify under the specs with type attribute. Basically two types
+of service which are NodePort and ClusterIP. 
+
+### NodePort
+
+Service make accessible  internal pods from the node.
+Service listen the pod in the node and forward request to
+NodePort (Port in the  node) -> Service Port (Port in the pod) -> 
+TargetPort (Port in the pod)
 
 
+### ClusterIp
 
-NodePort
-
-Service make acceble internal pods from the node. Service listen the pod in the node and forwered request to
-
-
-NodePort (Port in the  node) -> Service Port (Port in the pod) -> TargetPort (Port in the pod)
-
-
-ClusterIp
-
-Make virtual IP to communicate between extranel services.  Such as frontend server to backend. Cluster ip use communicate
+Make virtual IP to communicate between external services.  
+Such as frontend server to backend. Cluster ip use communicate
 between the services.
 
-LoadBlancer
+
+## Ports 
+
+LoadBlanker
 
 Make distribute the load among the pods
 
 
-### INGRESS
+```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
+
+# INGRESS
 
 An Ingress Controller is responsible for managing external access 
 to services within a Kubernetes cluster. Two popular Ingress Controllers are NGINX and Contour. Here, we'll focus on NGINX.
+
+
+```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
 
 ### NGINX Ingress Controller
 
@@ -710,6 +731,186 @@ They specify criteria such as source IP addresses, ports, and protocols.
 
 Egress Rules: These rules govern outgoing traffic from pods,
 determining which destinations, ports, and protocols are permitted.
+i
+### State Persistence 
+
+#### volumes 
+
+In Kubernetes, containers have a transient lifespan, 
+meaning that once they are terminated, all data within them is lost.
+To overcome this limitation, volumes can be utilized to persistently store data. Each pod within Kubernetes can be configured to have its own volume
+, providing a dedicated space for storing data.
+
+#### Persistence volumes 
+
+In the Kubernetes ecosystem, there are three primary components involved in persistent storage management: pods, persistent volumes (PV), and persistent volume claims (PVC).
+
+##### Pods: 
+These are the fundamental units of deployment in Kubernetes. Pods can consume persistent storage
+by referencing a PersistentVolumeClaim (PVC) through the persistentVolumeClaim property within the pod specification. 
+This property includes the name of the PVC using the claimName attribute.
+
+##### Persistent Volumes (PV): 
+These are storage resources provisioned in the cluster. PVs are independent of any particular pod and can be
+dynamically provisioned or statically configured by the cluster administrator.
+
+##### Persistent Volume Claims (PVC): 
+PVCs act as requests for storage by pods. They define the storage requirements 
+(such as access modes and capacity) needed by the pod. The PVCs are associated 
+with specific PVs based on matching criteria like access modes (e.g., ReadWriteOnce, ReadOnlyMany, ReadWriteMany) 
+and capacity.
+
+##### Summary
+To ensure a successful match between PVCs and PVs, the Kubernetes system compares 
+the access modes and storage capacity specified in the PVC with those provided by available PVs. 
+This matching process ensures that pods receive the required storage resources according to their defined needs.
+
+Additionally, it's essential to consider other attributes of PVs and PVCs, such as storage class, 
+reclaim policies, and volume labels, depending on the specific storage requirements and deployment 
+scenarios in Kubernetes. These attributes contribute to efficient resource allocation, management, 
+and lifecycle handling of persistent storage within the cluster.
+
+### Storage classes
+
+With storage class can provision storoage class like google storage. 
+
+
+
+
+## Stateful sets 
+
+How inprem db servers work ?
+
+Setup master first then slaves. After that clone all the data from master to slave1. Enabled continuous replication
+from master to slave.  Wait to slave 1 to be ready. clone the data from slave 1 to slave 2. Enable continuous 
+replication from master to slave2.  Enable continues replication from master to slave2. Configure master address 
+on slave. 
+
+Why stateful sets ?
+
+
+
+## Stateful Sets Introductions 
+
+
+
+
+
+## Helm
+
+
+
+## security 
+
+#####  create private key
+```openssl genrsa -out dinuka.key 2048```
+
+##### create certificate signing request 
+```openssl req -new -key dinuka.key -out dinuka.csr -subj "/CN=dinuka/O=dev/O=example.org```
+
+#### sign the certificate 
+```openssl x509 -req -in user.csr -CA <(minikube ssh 'cat /var/lib/minikube/certs/ca.crt') -CAkey <(minikube ssh 'cat /var/lib/minikube/certs/ca.key') -CAcreateseriaclel -out dinuka.crt -days 365```
+
+
+ubectl describe pod kube-apiserver-controlplane -n kube-system
+
+### Authorization 
+
+#### Node
+
+```kubectl describe pod kube-apiserver-controlplane -n kube-system```
+
+
+ 
+
+
+
+
+
+#### Role Based Access Control 
+
+##### commands 
+
+```kubectl get roles```
+```kubectl get rolebindings```
+```kubectl describe role <role-name>```
+```kubectl describe rolebindings  <bindings name>```
+```kubectl auth can-i <action name>  <resource type> ```
+```kubectl auth can-i <action name>  <resource type>  as <user-roleq>```
+
+
+
+
+#### create a role 
+
+```kubectl create role developer --verb=list,create,delete  --resources=pods```
+
+#### create a role binding 
+
+```kubectl create rolebinding dev-user-binding --role=developer --user=dev-user```
+
+
+#### creat a something as user 
+
+```kubectl --as dev-user create deployment nginx --image=nginx  -n blue```
+
+
+```kubectl get clusterroles --no-headers  | wc -l```
+
+
+
+
+```kubectl create clusterrole <role-name> --verb=* --resource=nodes```
+
+
+```k api-resources```
+
+```k auth can-i list storageclasses --as michelle```
+
+
+```kubectl create clusterrole  <role-name>  --verb=get,list,watch  --resources=nodes```
+
+```kubectl create clusterrolebinding <role-name>   --clusterrole=<role-name>  --user=<user-name>```
+
+
+
+### Admissions Controllers 
+
+Validating Cr
+
+NamespaceExists is default enabled 
+
+Mutatated 
+
+DefaultStorageClass  (Mutated ad controller )
+
+
+Vali and Mut
+
+
+
+Admission Webhook Controller 
+
+
+### API version 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

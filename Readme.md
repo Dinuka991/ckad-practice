@@ -21,7 +21,22 @@ container only live as long as task running
 
 # command cheat sheet 
 
+## Pod 
+
+```kubectl run <pod-name> --image=<container-image> --restart=Never```
+```kubectl run <pod-name> --image=<container-image> --restart=Never --dry-run=client -o yaml > pod.yaml```
+
+## Deployment 
+```kubectl create deployment <deployment-name> --image=<image-name>```
+```kubectl create deployment my-deployment --image=nginx --dry-run=client -o yaml > deployment.yaml```
+```kubectl run <deployment-name> --image=<container-image> --restart=Always --generator=deployment/apps.v1```
+
+## Services 
 ```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
+
+
+
+## Ingress 
 ```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
 
 # Pods

@@ -8,58 +8,56 @@
 
 ```docker ps```
 
-container only live as long as task running 
-
 #####  specify the task as argument 
 
 ```docker run ubuntu sleep 5 ```
 
-## Minikube commands
+# Minikube commands
 
 ```minikube start```
 
 
-# command cheat sheet 
+# kubernetes command cheat sheet 
 
-## Pod 
+## Pod
 
 ```kubectl run <pod-name> --image=<container-image> --restart=Never```
 ```kubectl run <pod-name> --image=<container-image> --restart=Never --dry-run=client -o yaml > pod.yaml```
+```kubectl get pods```
+```kubectl get pods <pod-name>  -o yaml > pod.yaml```
+```kubectl apply -f pod.yaml```
+```kubectl set image pod/pod-name container-name=image:tag```
 
 ## Deployment 
+
 ```kubectl create deployment <deployment-name> --image=<image-name>```
 ```kubectl create deployment my-deployment --image=nginx --dry-run=client -o yaml > deployment.yaml```
 ```kubectl run <deployment-name> --image=<container-image> --restart=Always --generator=deployment/apps.v1```
 
+## Secretes 
+
+```kubectl create secret generic <secret-name> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2> ... --dry-run=client -o yaml > secret.yaml```
+
+## ConfigMap
+
 ## Services 
 ```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
-
-
 
 ## Ingress 
 ```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
 
-# Pods
 
-
-#### Get Pods
-
-```kubectl get pods```
-
-#### Get Yaml file by giving pod name 
-
-```kubectl get pods <pod-name>  -o yaml > pod.yaml```
 
 #### Update Pod
 
 get the yaml file using above command and then open using vi editor, then update
 the required changes and apply the changes. 
 
-```kubectl apply -f pod.yaml```
+
 
 update the image file without opening yaml file
 
-```kubectl set image pod/pod-name container-name=image:tag```
+
 
 #### Describe Pod
 
@@ -71,17 +69,6 @@ update the image file without opening yaml file
 #### Edit Pod 
 
 ```kubectl apply -f pod.definition.yaml```
-
-If you have a pod definition file (pod.definition.yaml), you can edit it directly and apply the changes using this command.
-
-If you need to extract the definition of a pod to a file:
-
-Can not edit specifications of an existing POD. other than below 
-
-specs.containers[*].image
-spec.activeDeadlineSeconds
-spec.activeDeadlineSeconds
-specs.tolerations 
 
 
 
@@ -890,21 +877,6 @@ ubectl describe pod kube-apiserver-controlplane -n kube-system
 
 
 ### Admissions Controllers 
-
-Validating Cr
-
-NamespaceExists is default enabled 
-
-Mutatated 
-
-DefaultStorageClass  (Mutated ad controller )
-
-
-Vali and Mut
-
-
-
-Admission Webhook Controller 
 
 
 ### API version 

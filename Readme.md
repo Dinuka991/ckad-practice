@@ -1,25 +1,16 @@
 # Docker Commands 
 
-##### Run the instance of the image 
-
 ```docker run <image-name>```
-
-##### list the containers 
-
 ```docker ps```
-
-#####  specify the task as argument 
-
 ```docker run ubuntu sleep 5 ```
 
 # Minikube commands
 
 ```minikube start```
 
-
 # kubernetes command cheat sheet 
 
-## Pod
+## Pod - Commands 
 
 ```kubectl run <pod-name> --image=<container-image> --restart=Never```
 ```kubectl run <pod-name> --image=<container-image> --restart=Never --dry-run=client -o yaml > pod.yaml```
@@ -27,24 +18,166 @@
 ```kubectl get pods <pod-name>  -o yaml > pod.yaml```
 ```kubectl apply -f pod.yaml```
 ```kubectl set image pod/pod-name container-name=image:tag```
+```kubectl describe pod pod-name```
+```kubectl delete pod pod-name```
+```kubectl apply -f pod.definition.yaml```
+```kubectl get pod <pod-name> -o yaml > pod-definition.yaml```
+```kubectl exec ubuntu -- whoami```
+```kubectl edit pod <pod-name>```
 
-## Deployment 
+
+## Deployment - Commands 
 
 ```kubectl create deployment <deployment-name> --image=<image-name>```
 ```kubectl create deployment my-deployment --image=nginx --dry-run=client -o yaml > deployment.yaml```
 ```kubectl run <deployment-name> --image=<container-image> --restart=Always --generator=deployment/apps.v1```
+```kubectl create -f deployment-definition.yaml```
+```kubeclt create deployment <name> --image=<image-name> --replicas=<no-of-replicas>```
+```kubectl label deployments nginx-deployment tire=fe```
 
-## Secretes 
+## Secretes - Commands 
 
 ```kubectl create secret generic <secret-name> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2> ... --dry-run=client -o yaml > secret.yaml```
 
-## ConfigMap
 
-## Services 
+#### ingress - Commands
+
+```kubectl edit ingress  <name>  -n <namespace-name>```
+
+```kubectl get ingress```
+
+```kubectl create ingress example-ingress -n example-namespace --rule=/app=example-service:8080```
+
+```kubectl create namespace <>```
+
+```kubectl config set-context --current --namespace=ingress-nginx```
+
+```kubectl create configmap ingress-nginx-controller --namespace ingress-nginx```
+
+
+
+## ConfigMap - Commands 
+
+## Services - Commands 
+
 ```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
 
-## Ingress 
+## Ingress  - Commands 
+
 ```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
+
+## Replication Controller - Command 
+
+```kubectl create -f rc.defintion.yaml```
+
+
+## Replica Set - Commands
+
+```kubectl create -f replicaset-definition.yaml```
+
+```kubectl replace -f replicaset-definition.yaml```
+
+```kubectl scale --replicas=6 -f replicaset-defintion.yaml```
+
+```kubectl scale --replicas=6 replicaset myapp-replicaset```
+
+```kubectl edit rs new-replica-set```
+
+
+## Namespaces - Commands
+
+```kubectl get  namespaces```
+
+```kubectl get pods --namespace=kube-system```
+
+```kubectl get pods --namespace=dev```
+
+```kubectl crate -f namepace-dev.yaml```
+
+```kubectl get all -A```
+
+```kubectl get <resourse-name>  --all-namespaces```
+
+```kubectl config set-context $(kubectl config current-context) --namespace=dev```
+
+```kubectl config set-context --current --namespace=<name-namespce>```
+
+```kubectl get pods --all-namespaces```
+
+```kubectl get pods -n=finance```
+
+```kubectl get svc -n=marketing```
+
+
+##### Monitor and debug application
+
+```git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git```
+```kubectl create -f .```
+```minukube addons enable metrics-server```
+```kubectl top node```
+```kubectl top pod```
+
+
+#### scale the deployment
+
+```kubectl scal deployment --replicas=<number>  <deployment-name>```
+
+```kubectl create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml  > throw-dice-job.yaml```
+
+
+## Rollback - Commands 
+
+```kubectl rollout undo  deployment/<app-name>```
+
+```kubectl set image=<new-image>``` <deployment-name>
+
+```kubectl rollout status deployment/<app-name>```
+
+```kubectl rollout history deployment/<app-name>```
+
+```kubectl rollout undo deployment/<app-name>```
+
+
+
+#### Role Based Access Control Commands
+
+```kubectl get roles```
+
+```kubectl get rolebindings```
+
+```kubectl describe role <role-name>```
+
+```kubectl describe rolebindings  <bindings name>```
+
+```kubectl auth can-i <action name>  <resource type> ```
+
+```kubectl auth can-i <action name>  <resource type>  as <user-roleq>```
+
+
+## User Access - Command
+
+```kubectl --as dev-user create deployment nginx --image=nginx  -n blue```
+
+```kubectl get clusterroles --no-headers  | wc -l```
+
+```kubectl create clusterrole <role-name> --verb=* --resource=nodes```
+
+```k api-resources```
+
+```k auth can-i list storageclasses --as michelle```
+
+```kubectl create clusterrole  <role-name>  --verb=get,list,watch  --resources=nodes```
+
+```kubectl create clusterrolebinding <role-name>   --clusterrole=<role-name>  --user=<user-name>```
+
+
+## security - Commands
+
+```openssl genrsa -out dinuka.key 2048```
+
+```openssl req -new -key dinuka.key -out dinuka.csr -subj "/CN=dinuka/O=dev/O=example.org```
+
+```openssl x509 -req -in user.csr -CA <(minikube ssh 'cat /var/lib/minikube/certs/ca.crt') -CAkey <(minikube ssh 'cat /var/lib/minikube/certs/ca.key') -CAcreateseriaclel -out dinuka.crt -days 365```
 
 
 
@@ -59,114 +192,15 @@ update the image file without opening yaml file
 
 
 
-#### Describe Pod
 
-```kubectl describe pod pod-name```
-
-#### Delete Pod 
-
-```kubectl delete pod pod-name```
 #### Edit Pod 
 
-```kubectl apply -f pod.definition.yaml```
-
-
-
-
-```kubectl get pod <pod-name> -o yaml > pod-definition.yaml```
 
 Replace <pod-name> with the name of the pod you want to extract.
 
 To modify the properties of a pod interactively:
 
-```kubectl edit pod <pod-name>```
 
-Replace <pod-name> with the name of the pod you want to edit.
-
-#### run a command inside pod 
-
-```kubectl exec ubuntu -- whoami```
-
-## Replication Controller
-
-```kubectl create -f rc.defintion.yaml```
-
-## Replica Set 
-
-#### create replica set 
-
-```kubectl create -f replicaset-definition.yaml```
-
-#### update replica set
-
-```kubectl replace -f replicaset-definition.yaml```
-#### Scale the replicas 
-
-```kubectl scale --replicas=6 -f replicaset-defintion.yaml```
-
-```kubectl scale --replicas=6 replicaset myapp-replicaset```
-
-#### Edit the replica set 
-
-```kubectl edit rs new-replica-set```
-
-## Deployments 
-create deployment 
-
-```kubectl create -f deployment-definition.yaml```
-
-```kubeclt create deployment <name> --image=<image-name> --replicas=<no-of-replicas>```
-
-```kubectl label deployments nginx-deployment tire=fe```
-
-get all the objects
-
-```kubectl get all```
-
-## Namespaces
-
-#### Get all namespaces
-
-```kubectl get  namespaces```
-
-#### get pods from another namespace
-
-```kubectl get pods --namespace=kube-system```
-
-#### get all pods from dev 
-
-```kubectl get pods --namespace=dev```
-
-#### create namespace 
-
-```kubectl crate -f namepace-dev.yaml```
-
-#### find the all details with namespace 
-
-```kubectl get all -A```
-
-#### get a resource of all namespaces 
-
-```kubectl get <resourse-name>  --all-namespaces```
-
-#### Switch the namespaces 
-
-```kubectl config set-context $(kubectl config current-context) --namespace=dev```
-
-
-```kubectl config set-context --current --namespace=<name-namespce>```
-
-####  Get pods from all namespaces 
-
-```kubectl get pods --all-namespaces```
-
-#### create pod in finance namespace 
-
-```kubectl get pods -n=finance```
-
-#### get service in the namespace
-
-```kubectl get svc -n=marketing```
 
 ## Imperative commands 
 
@@ -435,17 +469,6 @@ checks , and if the application fail the check, Kubernetes will restart the cont
 
 ```kubectl logs -f <pod-name> <container-name>```
 
-##### Monitor and debug application 
-
-```git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git```
-
-```kubectl create -f .```
-
-```minukube addons enable metrics-server```
-
-```kubectl top node```
-
-```kubectl top pod```
 
 # POD Design 
 
@@ -515,32 +538,6 @@ update the image name with set command , in this way will have conflicts with de
 definition can not update using this command. 
 
 To identify the strategy can use describe command and it will show the strategy type. 
-
-##### Rollback 
-
-Rollback will allow to rollback the changes to previous version 
-
-```kubectl rollout undo  deployment/<app-name>```
-
-
-
-```kubectl set image=<new-image>``` <deployment-name>
-
-
-```kubectl rollout status deployment/<app-name>```
-
-```kubectl rollout history deployment/<app-name>```
-
-```kubectl rollout undo deployment/<app-name>```
-
-
-#### scale the deployment 
-
-```kubectl scal deployment --replicas=<number>  <deployment-name>```
-
-
-
-```kubectl create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml  > throw-dice-job.yaml```
 
 
 ## Service Types
@@ -707,21 +704,6 @@ Ingress resources are kubernetes objects that define that define rules and
 configuration  for managine extranel access to servoces withing the cluster. 
 
 
-#### Edit the ingress 
-
-```kubectl edit ingress  <name>  -n <namespace-name>```
-
-
-```kubectl get ingress```
-
-```kubectl create ingress example-ingress -n example-namespace --rule=/app=example-service:8080```
-
-```kubectl create namespace <>```
-
-```kubectl config set-context --current --namespace=ingress-nginx```
-
-```kubectl create configmap ingress-nginx-controller --namespace ingress-nginx``` 
-
 ### Network Policies 
 
 
@@ -802,17 +784,6 @@ Why stateful sets ?
 
 
 
-## security 
-
-#####  create private key
-```openssl genrsa -out dinuka.key 2048```
-
-##### create certificate signing request 
-```openssl req -new -key dinuka.key -out dinuka.csr -subj "/CN=dinuka/O=dev/O=example.org```
-
-#### sign the certificate 
-```openssl x509 -req -in user.csr -CA <(minikube ssh 'cat /var/lib/minikube/certs/ca.crt') -CAkey <(minikube ssh 'cat /var/lib/minikube/certs/ca.key') -CAcreateseriaclel -out dinuka.crt -days 365```
-
 
 ubectl describe pod kube-apiserver-controlplane -n kube-system
 
@@ -829,17 +800,6 @@ ubectl describe pod kube-apiserver-controlplane -n kube-system
 
 
 
-#### Role Based Access Control 
-
-##### commands 
-
-```kubectl get roles```
-```kubectl get rolebindings```
-```kubectl describe role <role-name>```
-```kubectl describe rolebindings  <bindings name>```
-```kubectl auth can-i <action name>  <resource type> ```
-```kubectl auth can-i <action name>  <resource type>  as <user-roleq>```
-
 
 
 
@@ -851,28 +811,6 @@ ubectl describe pod kube-apiserver-controlplane -n kube-system
 
 ```kubectl create rolebinding dev-user-binding --role=developer --user=dev-user```
 
-
-#### creat a something as user 
-
-```kubectl --as dev-user create deployment nginx --image=nginx  -n blue```
-
-
-```kubectl get clusterroles --no-headers  | wc -l```
-
-
-
-
-```kubectl create clusterrole <role-name> --verb=* --resource=nodes```
-
-
-```k api-resources```
-
-```k auth can-i list storageclasses --as michelle```
-
-
-```kubectl create clusterrole  <role-name>  --verb=get,list,watch  --resources=nodes```
-
-```kubectl create clusterrolebinding <role-name>   --clusterrole=<role-name>  --user=<user-name>```
 
 
 

@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: reporting-tool 
-              image: reporting-tool 
+              image: k-tool
           restartPolicy: Never
               
               

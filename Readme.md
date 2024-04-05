@@ -88,13 +88,18 @@
 ```kubectl create -f deployment-definition.yaml```
 ## get deployment 
 ```kubect get deployment```
-## update deployment
-```kubect apply -f deployment-definition.yaml```
-```kubectl set image deployment/my-app-deployment   nginx-container=nginx:1.91```
+## update deployment with record
+```kubect apply -f deployment-definition.yaml --record```
+```kubectl set image deployment/my-app-deployment   nginx-container=nginx:1.91 --record```
 ## status
 ```kubectl rollout status deployment/myapp-deployment```
 ## history
-```kubectl rollout history deployen```
+```kubectl rollout history deployment/my-app```
+## get by revision
+```kubectl rollout history deployment/myapp --revision=1```
+## undo deployment
+```kubectl rollout undp deployment/myapp --to-revision=1```
+
 
 
 

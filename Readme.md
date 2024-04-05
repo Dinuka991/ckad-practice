@@ -40,7 +40,7 @@
 ```kubectl create secret generic <secret-name> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2> ... --dry-run=client -o yaml > secret.yaml```
 
 
-#### ingress - Commands
+## ingress - Commands
 
 ```kubectl edit ingress  <name>  -n <namespace-name>```
 
@@ -55,8 +55,8 @@
 ```kubectl create configmap ingress-nginx-controller --namespace ingress-nginx```
 
 
-
 ## ConfigMap - Commands 
+
 
 ## Services - Commands 
 
@@ -70,7 +70,6 @@
 
 ```kubectl create -f rc.defintion.yaml```
 
-
 ## Replica Set - Commands
 
 ```kubectl create -f replicaset-definition.yaml```
@@ -82,6 +81,42 @@
 ```kubectl scale --replicas=6 replicaset myapp-replicaset```
 
 ```kubectl edit rs new-replica-set```
+
+# Application Deployment Commands 
+
+## create deployment 
+```kubectl create -f deployment-definition.yaml```
+## get deployment 
+```kubect get deployment```
+## update deployment
+```kubect apply -f deployment-definition.yaml```
+```kubectl set image deployment/my-app-deployment   nginx-container=nginx:1.91```
+## status
+```kubectl rollout status deployment/myapp-deployment```
+## history
+```kubectl rollout history deployen```
+
+
+
+## scale the deployment
+
+```kubectl scal deployment --replicas=<number>  <deployment-name>```
+
+```kubectl create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml  > throw-dice-job.yaml```
+
+
+## Rollback - Commands
+
+```kubectl rollout undo  deployment/<app-name>```
+
+```kubectl set image=<new-image>``` <deployment-name>
+
+```kubectl rollout status deployment/<app-name>```
+
+```kubectl rollout history deployment/<app-name>```
+
+```kubectl rollout undo deployment/<app-name>```
+
 
 
 ## Namespaces - Commands
@@ -116,26 +151,6 @@
 ```minukube addons enable metrics-server```
 ```kubectl top node```
 ```kubectl top pod```
-
-
-#### scale the deployment
-
-```kubectl scal deployment --replicas=<number>  <deployment-name>```
-
-```kubectl create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml  > throw-dice-job.yaml```
-
-
-## Rollback - Commands 
-
-```kubectl rollout undo  deployment/<app-name>```
-
-```kubectl set image=<new-image>``` <deployment-name>
-
-```kubectl rollout status deployment/<app-name>```
-
-```kubectl rollout history deployment/<app-name>```
-
-```kubectl rollout undo deployment/<app-name>```
 
 
 

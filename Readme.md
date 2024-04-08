@@ -1,46 +1,76 @@
 # Docker Commands 
 
 ```docker run <image-name>```
+
 ```docker ps```
+
 ```docker run ubuntu sleep 5 ```
 
 # Minikube commands
 
 ```minikube start```
 
-# kubernetes command cheat sheet 
 
-## Pod - Commands 
+# Pod - Commands 
 
 ```kubectl run <pod-name> --image=<container-image> --restart=Never```
+
 ```kubectl run <pod-name> --image=<container-image> --restart=Never --dry-run=client -o yaml > pod.yaml```
+
 ```kubectl get pods```
+
 ```kubectl get pods <pod-name>  -o yaml > pod.yaml```
+
 ```kubectl apply -f pod.yaml```
+
 ```kubectl set image pod/pod-name container-name=image:tag```
+
 ```kubectl describe pod pod-name```
+
 ```kubectl delete pod pod-name```
+
 ```kubectl apply -f pod.definition.yaml```
+
 ```kubectl get pod <pod-name> -o yaml > pod-definition.yaml```
+
 ```kubectl exec ubuntu -- whoami```
+
 ```kubectl edit pod <pod-name>```
 
 
-## Deployment - Commands 
+# Deployment - Commands
+
+```kubectl create -f deployment-definition.yaml```
 
 ```kubectl create deployment <deployment-name> --image=<image-name>```
-```kubectl create deployment my-deployment --image=nginx --dry-run=client -o yaml > deployment.yaml```
+
 ```kubectl run <deployment-name> --image=<container-image> --restart=Always --generator=deployment/apps.v1```
-```kubectl create -f deployment-definition.yaml```
-```kubeclt create deployment <name> --image=<image-name> --replicas=<no-of-replicas>```
+
+```kubectl create deployment my-deployment --image=nginx --dry-run=client -o yaml > deployment.yaml```
+
+```kubect get deployment```
+
+```kubect apply -f deployment-definition.yaml --record```
+
 ```kubectl label deployments nginx-deployment tire=fe```
 
-## Secretes - Commands 
+```kubectl set image deployment/my-app-deployment   nginx-container=nginx:1.91 --record```
+
+```kubectl rollout status deployment/myapp-deployment```
+
+```kubectl rollout history deployment/my-app```
+
+```kubectl rollout history deployment/myapp --revision=1```
+
+```kubectl rollout undp deployment/myapp --to-revision=1```
+
+```kubectl scal deployment --replicas=<number>  <deployment-name>```
+
+# Secretes - Commands 
 
 ```kubectl create secret generic <secret-name> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2> ... --dry-run=client -o yaml > secret.yaml```
 
-
-## ingress - Commands
+# ingress - Commands
 
 ```kubectl edit ingress  <name>  -n <namespace-name>```
 
@@ -55,16 +85,10 @@
 ```kubectl create configmap ingress-nginx-controller --namespace ingress-nginx```
 
 
-## ConfigMap - Commands 
+# ConfigMap - Commands 
 
 
-## Services - Commands 
 
-```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
-
-## Ingress  - Commands 
-
-```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
 
 ## Replication Controller - Command 
 
@@ -82,45 +106,7 @@
 
 ```kubectl edit rs new-replica-set```
 
-# Application Deployment Commands 
 
-## create deployment 
-```kubectl create -f deployment-definition.yaml```
-## get deployment 
-```kubect get deployment```
-## update deployment with record
-```kubect apply -f deployment-definition.yaml --record```
-```kubectl set image deployment/my-app-deployment   nginx-container=nginx:1.91 --record```
-## status
-```kubectl rollout status deployment/myapp-deployment```
-## history
-```kubectl rollout history deployment/my-app```
-## get by revision
-```kubectl rollout history deployment/myapp --revision=1```
-## undo deployment
-```kubectl rollout undp deployment/myapp --to-revision=1```
-
-
-
-
-## scale the deployment
-
-```kubectl scal deployment --replicas=<number>  <deployment-name>```
-
-```kubectl create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml  > throw-dice-job.yaml```
-
-
-## Rollback - Commands
-
-```kubectl rollout undo  deployment/<app-name>```
-
-```kubectl set image=<new-image>``` <deployment-name>
-
-```kubectl rollout status deployment/<app-name>```
-
-```kubectl rollout history deployment/<app-name>```
-
-```kubectl rollout undo deployment/<app-name>```
 
 
 

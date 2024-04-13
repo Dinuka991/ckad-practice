@@ -185,92 +185,85 @@
 
 ```openssl x509 -req -in user.csr -CA <(minikube ssh 'cat /var/lib/minikube/certs/ca.crt') -CAkey <(minikube ssh 'cat /var/lib/minikube/certs/ca.key') -CAcreateseriaclel -out dinuka.crt -days 365```
 
+# Helm Command
 
+```helm help```
 
-#### Update Pod
+#####  Search repo in artifact hub 
 
-get the yaml file using above command and then open using vi editor, then update
-the required changes and apply the changes. 
+```helm search hub wordress```
 
+#####  Add the local to bitnami
 
+```helm repo add bitnami <url>```
 
-update the image file without opening yaml file
+##### search added repo
 
+```helm search repo wordpress```
 
+##### Once find the chart need to install the chart
 
+```helm install <release-name>  <chart-name>```
 
-#### Edit Pod 
+##### List the downloaded packages3
 
+```helm list```
 
-Replace <pod-name> with the name of the pod you want to extract.
+##### List down downlos
 
-To modify the properties of a pod interactively:
+```helm repo list```
 
+##### Download but don't need to install 
 
-
-## Imperative commands 
-
-
-#### Deploy a pod 
-
-```kubectl run <podname> --image=<image-name> --labels <labelaname> = <labele value>```
-
-#### create a new service to expose application
-
-##### create a service named redis-service of ClusterIP to exposed pod redis on port 6379
-
-```kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml```
-
-##### Without pass selectors 
-
-```kubectl create service clusterip redis-service --tcp=6379:6379 --dry-run=client -o yaml | kubectl apply -f -```
-
-#### create deployment using imperative command
-
-```kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3```
-
-#### create pod with expose the port
-
-```kubectl run custom-nginx --image=nginx --port=8080```
-
-#### create namespace imperative 
-
-```kubectl create ns dev-ns```
-
-#### create new deployment with image and replicas 
-
-```kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2```
-
-
-#### Create a pod called httpd using the image httpd:alpine in the default namespace. Next, create a service of type ClusterIP by the same name (httpd). The target port for the service should be 80
-
-```kubectl run httpd --image=httpd:alpine --port=80 --expose```
+```helm pull  -untar bitnami/wordpress```
 
 
 
-## Config Map
 
-#### Create config map declarative way
+```helm install wwordpress```
 
-##### Imp way
+```helm update wordpress```
 
-```kubectl create cm webapp-config-map  --from-literal=<NAME>=<value>```
+```helm rollback wordpress```
 
-##### dec way
+```helm uninstall wordpress```
 
-```kubectl create -f cnfig-map.yml```
+```helm list```
 
-#### Imperative way 
+```helm uninstall my-release```
 
-```kubectl create config \```
-```  ```
-```<config-name>  --form-literal=<key>=<value>```
+```helm pull --unstar bitnami/wordpress```
 
-#### giving file path 
+```ls wordpress```
 
-```kubectl create config \```
-```  ```
-```<config-name>  --<form-file>=<file_to_path>```
+```helm install release-4 ./wordpress```
+
+```helm search hub wordpress```
+
+``` helm repo add bitnami https://charts.bitnami.com/bitnami```
+
+```helm install webapp-color-apd /opt/<helm_chart_directory> namespace frontend-apd --set service.type=NodePort --set replicaCount=3 --set image.tag=1.20.0```
+
+##### Home many repos in the node
+
+``help repo list``
+
+#####  install helm chart from the bitnami repo released name bravo
+
+```helm install bravo bitnami/drupal```
+
+##### Search for wordpress helm chart package from the Artifact hub
+
+```helm search hub wordpress```
+
+##### Which command is used to search for the joomla package from the added repository?
+
+```help search repo joomla```
+
+##### Download the bitnami apache package under the /root directory
+
+```helm pull --untar  bitnami/apache```
+
 
 
 ## Encrypt Secret Data at Rest 
@@ -368,96 +361,6 @@ Toleration are add the Pod.
 
 
 
-## Multi-Container Pods 
-
-There three type of multi container pods in kubernets. those are Ambassador,Adapter
-and Sidecar. 
-
-#### Example of sidecar patter
-
-Purpose: Extends the functionality of the main container by adding a helper container.
-Example: You have a web server and a log agent. Both reside in the same pod, sharing the same volume for logs. The log agent collects and processes logs from the web server without modifying its core functionality.
-Benefits: Modular design, easier scaling of helper containers, independent lifecycles for main and helper containers
-
-#### Example of Ambassdor 
-
-Purpose: Acts as a proxy or mediator between the main container and external services.
-Example: Your application interacts with three databases: production, development, and user acceptance testing (UAT). An Ambassador container routes traffic to the appropriate database based on configuration or load balancing.
-Benefits: Abstracts service discovery and routing from the main container, simplifies communication with external services, improves resilience and scalability.
-
-##### Adapter design pattern
-
-Purpose: Adapts data formats or protocols between the main container and other services.
-Example: Different containers in your application generate logs in various formats. An Adapter container collects these logs, standardizes the format, and then sends them to a central logging server.
-Benefits: Ensures consistent data format for consumption by downstream systems, simplifies integration with heterogeneous components.
-
-#### see log 
-
-```kubectl -n elastic-stack exec -it app -- cat /log/app.log```
-
-## Tips
-
-#### checkout to another namespace
-
-```kubectl config set-context $(kubectl config current-context) --namespace=<desired-namespace>```
-
-#### Output with JSON format 
-
-```kubectl create namespace test-123 --dry-run -o json```
-
-#### Output with wide details 
-
-```kubectl get pods -o wide```
-
-#### Output with YAML format 
-
-```kubectl create namespace test-123 --dry-run -o yaml```
-
-#### imperative command to creat resource 
-
-```--dry-run```
-
-#### imperative command to test without creating resources 
-
-```-o yaml:```
-
-#### Modify YAML and apply changes 
-
-```kubectl apply -f```
-
-#### Get the count 
-
-
-## Command & Arguments 
-
-
-
-
-
-
-
-## Observability 
-
-#### Readiness and Liveness Probes 
-
-The lifecycle of pods consists three main stages:pending , containerCreating and running.
-Pod conditions include PodScheduled, Initialized , ContainersReady and Ready. 
-
-Typically , Kubernetes does not wait for all applications inside containers to be up and running before
-showing as ready. This premature readiness status can lead to issues. To mitigate this, utilize the 
-##### readinessProbe.
-
-this allows you to define test scenarios to ensure that services inside the containers are up and running properly. 
-
-##### Liveness Probe
-
-In addition to readinessProbe , livenessProbe is used to health test applications. As kubernetes is an 
-orchestration service, it has the capability to automatically restart failed containers. However ,In 
-Scenarios where a container repeatedly fails due to issues, Kubernetes may enter an infinite restart loop.
-To mitigate this , livenessProbe can be utilized. 
-
-LivenessProbe allows you to define health checks for your application.Kubernetes periodically performs these 
-checks , and if the application fail the check, Kubernetes will restart the container to restore its health. 
 
 
 ##### Logging 
@@ -530,59 +433,13 @@ of deployment one by one and take up new version one by one. In this way applica
 ```kubectl rollout deployment```
 
 
-there few ways to update the deployment.
-
-##### Option-1 (To update deployment)
-
-update the definition file and use the below apply command. 
-
-```kubectl apply -f <defile name>```
-
-##### Option-2(To update deployment)
-
-update the image name with set command , in this way will have conflicts with definition file with deployment as
-definition can not update using this command. 
-
-To identify the strategy can use describe command and it will show the strategy type. 
-
-
-## Service Types
-
-Kubernetes service use to communicate between pods within node as well
-pod outside the cluster. Services help to make available apllication 
-to end users. and help the conections to extranal services as well
-make loose couple microservices. 
 
 
 # service 
 
 ```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
 
-## Service Types
 
-Service type specify under the specs with type attribute. Basically two types
-of service which are NodePort and ClusterIP. 
-
-### NodePort
-
-Service make accessible  internal pods from the node.
-Service listen the pod in the node and forward request to
-NodePort (Port in the  node) -> Service Port (Port in the pod) -> 
-TargetPort (Port in the pod)
-
-
-### ClusterIp
-
-Make virtual IP to communicate between external services.  
-Such as frontend server to backend. Cluster ip use communicate
-between the services.
-
-
-## Ports 
-
-LoadBlanker
-
-Make distribute the load among the pods
 
 
 ```kubectl expose <resource-type> <resource-name> --port=<port> --name=<service-name> --target-port=<target-port> --type=<service-type>```
@@ -594,23 +451,6 @@ to services within a Kubernetes cluster. Two popular Ingress Controllers are NGI
 
 
 ```kubectl create ingress example-ingress --rule=example.com/=/ --default-backend=example-service:80```
-
-### NGINX Ingress Controller
-
-### Deployment
-
-The NGINX Ingress Controller deployment includes:
-
-NGINX deployment
-NGINX service
-ConfigMap for NGINX configuration
-Authorization configurations, if required
-
-### Ingress Resources
-
-Ingress resources define rules and configuration for managing external 
-access to services within the cluster. 
-They specify routing based on URL paths.
 
 
 ### Usage
@@ -627,10 +467,6 @@ They specify routing based on URL paths.
 
 ```kubectl get ingress```
 
-### Ingress Controller Pod
-
-The Ingress Controller runs as a pod within the Kubernetes cluster. Its primary
-function is to watch for Ingress resources and implement the specified rules.
 
 ### Editing Ingress
 
@@ -638,37 +474,9 @@ To edit an existing Ingress resource:
 
 ```kubectl edit ingress <name> -n <namespace-name>```
 
-### Conclusion
-
-Ingress resources and controllers are crucial for managing external 
-access to services within a Kubernetes cluster. By utilizing NGINX as an Ingress Controller,
-you can efficiently manage routing and access control for your applications.
-
-#### How simple application deploy 
-
-You  build the application in docker image deploy to kubernetes cluster as pod
-in deployment. Application need a  database so database also deploy as a pod and
-create a service call cluster ip called mysql service make it accessable to applicaton.
-To make application accessable to outside create a another service called 
-NodePort.  point to dns server to IP of the node.
 
 
 
-
-#### Ingress controller 
-
-GCP .NGINX ,Contour
-
-##### NGINX
-
-NGINX provide NGINX server which include the load balancer , ssl and ect.
-Need to setup a config map to connect with NGINX.
-
-
-ingress controller included  NGINX deployment , service , configMap and Auth.
-
-Ingress resource is created with kubernetes definition file. 
-Ex - Ingress-wear.yaml 
 
 #### Ingress resources 
 
@@ -681,132 +489,17 @@ rules defined the routs base on URL.
 
 ```kubectl edit ingress --namespace app-space```
 
-#### Ingress Controller 
-
-Ingress controller is responsible to managing external access to services
-withing a kubernetes cluster.Two popular ingress controller are
-NGINX and counter.
-
-This is typically  run as Pod withing the kubernetes cluster.
-
-Ingress controller handle the load balancing , routing ,incoming traffic 
-based  on he rules defined in the ingress resources. 
-
-##### Ingress resources 
-
-Ingress Resources are Kubernetes objects that define rules and configuration for managing external
-access to services within the cluster.
 
 
 
 
 
-
-```kubectl ```
-
-#### Ingress Resources 
-
-Ingress resources are kubernetes objects that define that define rules and
-configuration  for managine extranel access to servoces withing the cluster. 
-
-
-### Network Policies 
-
-
-Basically there two type of network traffics. It's include ingress and egress. so ingress is incoming traffic and 
-egress is outgoing traffic. 
-
-Ingress Rules: These rules define how incoming traffic is allowed to reach pods within the cluster. 
-They specify criteria such as source IP addresses, ports, and protocols. 
-
-Egress Rules: These rules govern outgoing traffic from pods,
-determining which destinations, ports, and protocols are permitted.
-i
-### State Persistence 
-
-#### volumes 
-
-In Kubernetes, containers have a transient lifespan, 
-meaning that once they are terminated, all data within them is lost.
-To overcome this limitation, volumes can be utilized to persistently store data. Each pod within Kubernetes can be configured to have its own volume
-, providing a dedicated space for storing data.
-
-#### Persistence volumes 
-
-In the Kubernetes ecosystem, there are three primary components involved in persistent storage management: pods, persistent volumes (PV), and persistent volume claims (PVC).
-
-##### Pods: 
-These are the fundamental units of deployment in Kubernetes. Pods can consume persistent storage
-by referencing a PersistentVolumeClaim (PVC) through the persistentVolumeClaim property within the pod specification. 
-This property includes the name of the PVC using the claimName attribute.
-
-##### Persistent Volumes (PV): 
-These are storage resources provisioned in the cluster. PVs are independent of any particular pod and can be
-dynamically provisioned or statically configured by the cluster administrator.
-
-##### Persistent Volume Claims (PVC): 
-PVCs act as requests for storage by pods. They define the storage requirements 
-(such as access modes and capacity) needed by the pod. The PVCs are associated 
-with specific PVs based on matching criteria like access modes (e.g., ReadWriteOnce, ReadOnlyMany, ReadWriteMany) 
-and capacity.
-
-##### Summary
-To ensure a successful match between PVCs and PVs, the Kubernetes system compares 
-the access modes and storage capacity specified in the PVC with those provided by available PVs. 
-This matching process ensures that pods receive the required storage resources according to their defined needs.
-
-Additionally, it's essential to consider other attributes of PVs and PVCs, such as storage class, 
-reclaim policies, and volume labels, depending on the specific storage requirements and deployment 
-scenarios in Kubernetes. These attributes contribute to efficient resource allocation, management, 
-and lifecycle handling of persistent storage within the cluster.
-
-### Storage classes
-
-With storage class can provision storoage class like google storage. 
-
-
-
-
-## Stateful sets 
-
-How inprem db servers work ?
-
-Setup master first then slaves. After that clone all the data from master to slave1. Enabled continuous replication
-from master to slave.  Wait to slave 1 to be ready. clone the data from slave 1 to slave 2. Enable continuous 
-replication from master to slave2.  Enable continues replication from master to slave2. Configure master address 
-on slave. 
-
-Why stateful sets ?
-
-
-
-## Stateful Sets Introductions 
-
-
-
-
-
-## Helm
-
-
-
-
-ubectl describe pod kube-apiserver-controlplane -n kube-system
 
 ### Authorization 
 
 #### Node
 
 ```kubectl describe pod kube-apiserver-controlplane -n kube-system```
-
-
- 
-
-
-
-
-
-
 
 
 #### create a role 
@@ -818,12 +511,6 @@ ubectl describe pod kube-apiserver-controlplane -n kube-system
 ```kubectl create rolebinding dev-user-binding --role=developer --user=dev-user```
 
 
-
-
-### Admissions Controllers 
-
-
-### API version 
 
 
 
